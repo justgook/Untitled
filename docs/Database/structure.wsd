@@ -1,0 +1,115 @@
+@startuml Structure
+allow_mixing
+!define BLOCK (B, #AAAAAA)
+!define USER (U, #AAFFAA) User
+title
+
+ Structure of Block
+
+end title
+
+
+enum BlockType {
+  Government
+  CreateUser
+  UpdateUser
+}
+
+class Zero << BLOCK >> {
+    -- Header --
+    +**type**: Government
+    +**length**: Int
+    -- Meta --
+    +**index**: 0
+    +**timeStamp**: UTC
+    +**author**: 0
+    +**nonce**: Int - salt | //proof of work//
+    +--previousHash:-- --String--
+    +**hash**: String
+    -- Government Data --
+    +**struct**: Block / Meta Structure
+    +**decoder**: wasm
+    +**block-validator**: wasm
+    +**application-validator**: wasm
+}
+class First << BLOCK >> {
+    --Header--
+    +**type**: Government
+    +**length**: Int
+    --Meta--
+    +**index**: 1
+    +**nonce**: Int - salt | //proof of work//
+    +**timeStamp**: UTC
+    +**author**: 0
+    +**previousHash**: String
+    +**hash**: String
+    -- Data  --
+    **EncryptedGovernmentBinary**
+}
+
+class Base << BLOCK >> {
+  -- Header --
+    +**type**: BlockType
+    +**length**: Int
+  -- Meta --
+    +**index**: Int
+    +**nonce**: Int - salt | //proof of work//
+    +**timeStamp**: UTC
+    +**author**: UserID
+    +**previousHash**: String
+    +**hash**: String
+}
+class Approved << BLOCK >> {
+  -- Data --
+    **Signed via goverment**
+}
+class UnApproved << BLOCK >> {
+  -- Data --
+    **Encrypted via author**
+}
+
+class CreateUser <<BLOCK>> {
+  -- Data --
+  +**key**: PublicKey
+}
+
+class UpdateUser <<BLOCK>>{
+  -- Data --
+  +**key**: new PublicKey
+}
+
+' class MergeUser<¿need?> <<BLOCK>>{
+'   -- Data --
+'   **EncryptedBinary**
+' }
+
+class UpdateGovernment <<BLOCK>>{
+  -- Data --
+  replace any of **Government Data**
+}
+class Transaction <<BLOCK>>{
+  -- Data --
+  +**from**: PublicKey
+  +**to**: PublicKey
+  +**amount**: PublicKey
+}
+Base <|-- Approved
+Approved <|-- UnApproved
+UnApproved <|-- CreateUser
+UnApproved <|-- UpdateUser
+UnApproved <|--Transaction
+' UnApproved <|-- MergeUser
+Approved <|-- UpdateGovernment
+
+
+legend left
+  Meta Data Bit Structure
+
+  |= |= table |= header |
+  | type | Int | row |
+  | lenght | Int | row |
+  | dataStart | Int | row |
+
+end legend
+' listopeniconic
+@enduml

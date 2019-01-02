@@ -1,0 +1,14 @@
+resolver: lts-12.13
+packages:
+- .
+
+# The image settings are used for the creation of container images using `stack image container`, e.g.
+# https://docs.haskellstack.org/en/stable/yaml_configuration/#image
+# image:
+#   containers:
+#   - name: client
+#     base: fpco/stack-run
+#     add:
+#       production/app-backend/conf/: /etc/app-backend
+#     entrypoints:
+#     - app-backend

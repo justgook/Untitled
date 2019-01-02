@@ -1,0 +1,36 @@
+@startuml workflow
+title
+ Database Workflow
+
+end title
+
+:Zero Block;
+:First Block;
+repeat
+-[#black,dotted]->
+#HotPink:Government Update;
+-[#black,dotted]->
+partition "Unapproved Bloks" {
+  fork
+  -[#black,dotted]->
+	:User Block;
+  -[#black,dotted]->
+  fork again
+  -[#black,dotted]->
+	:Land Block;
+  -[#black,dotted]->
+  fork again
+  -[#black,dotted]->
+	:Transaction Block;
+  -[#black,dotted]->
+  fork again
+  -[#black,dotted]->
+	:Application Signature Block;
+  -[#black,dotted]->
+  end fork
+}
+
+repeat while (Government Approvement)
+
+
+@enduml

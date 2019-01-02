@@ -1,0 +1,55 @@
+@startuml Blockchain
+' allow_mixing
+' database "Blockchain" {
+
+  object "Zero Block" as zero {
+    index: 0
+    timeStamp: UTC
+    data: {\n  struct: Block Structure\n  decoder: wasm\n  block-validator: wasm\n  application-validator: wasm\n}
+  }
+  note left of zero: Block is Not **Encrypted**!\nTo be able get Public Key
+
+  object "First Block" as first {
+    index: 1
+    timeStamp: UTC
+    data: Initial data
+    previousHash: !find type!
+    nonce: Int (salt|//proof of work//)
+  }
+  note left of first: Block is encrypted with **Private** government key\nthat can be decoded with //zero// block\nusing **struct** and wasm **decoder** (for **data** field)
+  frame "Unapproved Bloks" {
+
+    object "New/Update User Block" as user {
+      ..
+    }
+    object "New/Update Land Block" as land {
+      ..
+    }
+    object "Transaction" as transaction {
+      ..
+    }
+  }
+
+  object "Government Approve" as approve {
+    index: Int
+    timeStamp: UTC
+    ...
+  }
+  note left of approve: Encrypts/Encodes unapproved bloks
+
+
+  object "Government Update" as update {
+    ..
+  }
+  note left of  update: Can change decoder / structure / validator\nfor future blocks
+
+  zero --|> first
+  first ..|> user
+  user ..|> land
+  land ..|> transaction
+  transaction --|> approve
+  approve ..|> update
+
+' }
+
+@enduml

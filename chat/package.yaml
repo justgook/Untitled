@@ -1,0 +1,76 @@
+name:                chat
+version:             0.1.0.0
+github:              "justgook/chat"
+license:             BSD3
+author:              "Romans Potasovs"
+maintainer:          "justgook@gmail.com"
+copyright:           "2018 Romans Potasovs"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/justgook/chat#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- text
+- capnp
+- bytestring
+- vector
+- exceptions
+- data-default
+- zeromq4-haskell
+
+
+library:
+  source-dirs: src
+
+executables:
+  chat-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - chat
+  hwserver:
+    main:                Server.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is Server
+    dependencies:
+    - chat
+  hwclient:
+    main:                Client.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -main-is Client
+    dependencies:
+    - chat
+
+tests:
+  chat-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - chat
